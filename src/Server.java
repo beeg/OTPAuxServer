@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 
-
-
 public class Server {
 	
 	private ServerSocket ss;
@@ -46,9 +44,12 @@ public class Server {
 	public static void main(String[] args) throws IOException{	
 		Server s = new Server(8080);
 		while (!s.isTerminar()) {		
-			System.out.println("Hola");
-			s.setsM(new SocketManager(s.getSs().accept()));
-			//sM.Leer();
+			s.sM = new SocketManager(s.getSs().accept());
+			String message = s.sM.Leer();
+			String passphrase = message.substring(0, message.indexOf(','));
+			String counter = message.substring(message.indexOf(',')+1);
+			HOTP hotp = new HOTP(HOTP.AlgorithmType.SHA1,9,passphrase.getBytes());
+			s.sM.Escribir(hotp.generateHTOPPassword(Long.valueOf(counter))+"");
 		}
 	}
 }
