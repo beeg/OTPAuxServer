@@ -12,7 +12,7 @@ public class Server {
 	public Server(int puerto) {
 		terminar = false;	
 		try {
-			ss = new ServerSocket(3000);
+			ss = new ServerSocket(puerto);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,9 +35,18 @@ public class Server {
 		this.terminar = terminar;
 	}
 
-	public static void main(String[] args) throws IOException{			
-		while (!terminar) {		
-			sM = new SocketManager(ss.accept());
+	public static SocketManager getsM() {
+		return sM;
+	}
+
+	public static void setsM(SocketManager sM) {
+		Server.sM = sM;
+	}
+
+	public static void main(String[] args) throws IOException{	
+		Server s = new Server(8080);
+		while (!s.isTerminar()) {		
+			s.setsM(new SocketManager(ss.accept()));
 			//sM.Leer();
 		}
 	}
