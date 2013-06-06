@@ -5,9 +5,9 @@ import java.net.ServerSocket;
 
 public class Server {
 	
-	private static ServerSocket ss;
-	private static boolean terminar;
-	private static SocketManager sM;
+	private ServerSocket ss;
+	private boolean terminar;
+	private SocketManager sM;
 
 	public Server(int puerto) {
 		terminar = false;	
@@ -35,18 +35,19 @@ public class Server {
 		this.terminar = terminar;
 	}
 
-	public static SocketManager getsM() {
+	public SocketManager getsM() {
 		return sM;
 	}
 
-	public static void setsM(SocketManager sM) {
-		Server.sM = sM;
+	public void setsM(SocketManager sM) {
+		this.sM = sM;
 	}
 
 	public static void main(String[] args) throws IOException{	
 		Server s = new Server(8080);
 		while (!s.isTerminar()) {		
-			s.setsM(new SocketManager(ss.accept()));
+			System.out.println("Hola");
+			s.setsM(new SocketManager(s.getSs().accept()));
 			//sM.Leer();
 		}
 	}
